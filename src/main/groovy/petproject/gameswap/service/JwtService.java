@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import petproject.gameswap.entity.UserEntity;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Service

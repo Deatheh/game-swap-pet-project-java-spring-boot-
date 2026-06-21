@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import petproject.gameswap.controller.ErrorResponse;
 import petproject.gameswap.service.AuthService;
 
 import java.util.List;

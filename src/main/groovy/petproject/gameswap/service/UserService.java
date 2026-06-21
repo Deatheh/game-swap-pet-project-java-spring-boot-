@@ -9,7 +9,6 @@ import petproject.gameswap.entity.UserEntity;
 import petproject.gameswap.exception.EmailAlreadyExistsException;
 import petproject.gameswap.exception.UsernameAlreadyExistsException;
 import petproject.gameswap.repository.UserRepository;
-import petproject.gameswap.utils.EmailFunctions;
 
 
 @Service
