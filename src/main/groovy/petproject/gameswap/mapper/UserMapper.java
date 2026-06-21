@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Component
 public class UserMapper {
 
-    public UserEntity toDTO(RegisterRequest request){
+    public UserEntity toEntity(RegisterRequest request){
 
         return UserEntity.builder()
                 .username(request.getUsername())
