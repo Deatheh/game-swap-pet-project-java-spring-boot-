@@ -1,15 +1,12 @@
 package petproject.gameswap.service;
 
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import petproject.gameswap.dto.auth.AuthResponse;
 import petproject.gameswap.dto.auth.RegisterRequest;
-import petproject.gameswap.entity.Role;
-import petproject.gameswap.entity.UserEntity;
 import petproject.gameswap.mapper.UserMapper;
-
-import java.time.LocalDateTime;
 
 @Service
 public class AuthService {
@@ -25,6 +22,7 @@ public class AuthService {
         this.userMapper = userMapper;
     }
 
+    @Transactional
     public AuthResponse registration(RegisterRequest request) {
         var userEntity = userMapper.toDTO(request);
 
