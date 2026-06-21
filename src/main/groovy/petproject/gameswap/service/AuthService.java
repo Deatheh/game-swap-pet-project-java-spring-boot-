@@ -15,16 +15,18 @@ public class AuthService {
     private final UserService userService;
     private final JwtService jwtService;
     private final UserMapper userMapper;
+    private final RefreshTokenService refreshTokenService;
 
-    public AuthService(UserService userService, JwtService jwtService, UserMapper userMapper) {
+    public AuthService(UserService userService, JwtService jwtService, UserMapper userMapper, RefreshTokenService refreshTokenService) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.userMapper = userMapper;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Transactional
     public AuthResponse registration(RegisterRequest request) {
-        var userEntity = userMapper.toDTO(request);
+        var userEntity = userMapper.toEntity(request);
 
         log.info("Called userService.createUser");
         var user = userService.createUser(userEntity);
@@ -34,6 +36,9 @@ public class AuthService {
 
         log.info("Called jwtService.generateRefreshToken");
         var refreshToken = jwtService.generateRefreshToken(user);
+
+        log.info("Called refreshTokenService.save");
+        refreshTokenService.save(user.getId(),refreshToken);
 
         return new AuthResponse(
                 accessToken,
