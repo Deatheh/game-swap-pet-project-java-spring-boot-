@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import petproject.gameswap.dto.auth.AuthResponse;
 import petproject.gameswap.dto.auth.LoginRequest;
+import petproject.gameswap.dto.auth.RefreshRequest;
 import petproject.gameswap.dto.auth.RegisterRequest;
+import petproject.gameswap.exception.InvaildTokenException;
 import petproject.gameswap.mapper.UserMapper;
 
 @Service
@@ -68,6 +70,40 @@ public class AuthService {
         var refreshToken = jwtService.generateRefreshToken(user);
 
         log.info("Login: Called refreshTokenService.save");
+        refreshTokenService.save(user.getId(),refreshToken);
+
+        return new AuthResponse(
+                accessToken,
+                refreshToken
+        );
+    }
+
+    public AuthResponse refresh(RefreshRequest request) {
+        log.info("Refresh: Called jwtService.getUserIdFromToken");
+        Long userId = jwtService.getUserIdFromToken(request.getRefreshToken());
+
+        log.info("Refresh: Called jwtService.getUserIdFromToken");
+        boolean isValid = refreshTokenService.isValid(userId,request.getRefreshToken());
+        if (!isValid){
+            throw new InvaildTokenException("Refresh token is not valid");
+        }
+
+        log.info("Refresh: Called userService.getUserById");
+        var user = userService.getUserById(userId);
+
+        log.info("Refresh: Called userService.verificationUserActive");
+        userService.verificationUserActive(user);
+
+        log.info("Refresh: Called jwtService.generateAccessToken");
+        var accessToken = jwtService.generateAccessToken(user);
+
+        log.info("Refresh: Called refreshTokenService.revoke");
+        refreshTokenService.revoke(userId);
+
+        log.info("Refresh: Called jwtService.generateRefreshToken");
+        var refreshToken = jwtService.generateRefreshToken(user);
+
+        log.info("Refresh: Called refreshTokenService.save");
         refreshTokenService.save(user.getId(),refreshToken);
 
         return new AuthResponse(

@@ -11,8 +11,6 @@ import petproject.gameswap.dto.auth.LoginRequest;
 import petproject.gameswap.dto.auth.RefreshRequest;
 import petproject.gameswap.dto.auth.RegisterRequest;
 import petproject.gameswap.service.AuthService;
-import petproject.gameswap.service.JwtService;
-import petproject.gameswap.service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -43,13 +41,13 @@ public class AuthController {
                 .body(authService.login(request));
     }
 
-    /*@PostMapping("/refresh")
+    @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(
             @Valid @RequestBody RefreshRequest request
     ){
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(authService.refrash(request));
-    }*/
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(authService.refresh(request));
+    }
 }
 
 

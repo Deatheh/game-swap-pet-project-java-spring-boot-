@@ -46,6 +46,15 @@ public class UserService {
         return user.get();
     }
 
+    public UserEntity getUserById(Long id){
+        var user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            log.warn("Error(404): user not exists");
+            throw new UserNotFoundByIdException("user with id: " + id + " not found");
+        }
+        return user.get();
+    }
+
     public void verificationByPassword(UserEntity user, String password){
         if (!passwordEncoder.matches(password, user.getPassword())) {
             log.warn("Error(401): incorrect password");
