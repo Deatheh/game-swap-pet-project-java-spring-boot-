@@ -35,13 +35,13 @@ public class AuthController {
                 .body(authService.registration(request));
     }
 
-    /*@PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody LoginRequest request
     ){
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(authService.login(request));
-    }*/
+    }
 
     /*@PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(

@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import petproject.gameswap.dto.auth.LoginRequest;
 import petproject.gameswap.entity.UserEntity;
-import petproject.gameswap.exception.EmailAlreadyExistsException;
-import petproject.gameswap.exception.UsernameAlreadyExistsException;
+import petproject.gameswap.exception.*;
 import petproject.gameswap.repository.UserRepository;
 
 
@@ -18,7 +18,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -36,6 +35,29 @@ public class UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    public UserEntity getUserByEmail(String email){
+        var user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            log.warn("Error(404): email not exists");
+            throw new EmailNotFoundException("user with email: " + email + " not found");
+        }
+        return user.get();
+    }
+
+    public void verificationByPassword(UserEntity user, String password){
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            log.warn("Error(401): incorrect password");
+            throw new IncorrectPasswordException("incorrect password");
+        }
+    }
+
+    public void  verificationUserActive(UserEntity user){
+        if (!user.getIsActive()){
+            log.warn("Error(401): user is not active");
+            throw new UnauthorizedException("User is not active");
+        }
     }
 
 

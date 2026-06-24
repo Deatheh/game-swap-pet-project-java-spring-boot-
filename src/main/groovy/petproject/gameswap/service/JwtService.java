@@ -11,7 +11,6 @@ import petproject.gameswap.entity.UserEntity;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class JwtService {

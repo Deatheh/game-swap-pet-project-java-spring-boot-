@@ -1,6 +1,7 @@
 package petproject.gameswap.mapper;
 
 import org.springframework.stereotype.Component;
+import petproject.gameswap.dto.auth.LoginRequest;
 import petproject.gameswap.dto.auth.RegisterRequest;
 import petproject.gameswap.entity.Role;
 import petproject.gameswap.entity.UserEntity;
@@ -19,6 +20,14 @@ public class UserMapper {
                 .role(Role.USER)
                 .createdAt(LocalDateTime.now())
                 .isActive(true)
+                .build();
+    }
+
+    public UserEntity toEntity(LoginRequest request){
+
+        return UserEntity.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
                 .build();
     }
 }
